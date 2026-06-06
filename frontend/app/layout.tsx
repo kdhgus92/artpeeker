@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Artpeeker",
   description:
-    "Discover, save, and revisit artwork with a focused social login flow.",
+    "간편한 소셜 로그인으로 작품을 발견하고 저장하고 다시 감상해보세요.",
 };
 
 export default function RootLayout({
@@ -14,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full antialiased`}>
+    <html lang="ko" className={`h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

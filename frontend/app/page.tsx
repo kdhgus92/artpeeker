@@ -2,43 +2,23 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,#fff8da_0%,#f6efe2_36%,#e7dfd4_100%)] px-6 py-16 text-stone-900">
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.16),transparent_40%,rgba(119,98,73,0.08)_75%,transparent)]" />
-      <div className="relative w-full max-w-5xl rounded-[2rem] border border-stone-900/10 bg-white/70 p-8 shadow-[0_30px_90px_rgba(74,51,22,0.12)] backdrop-blur md:p-12">
-        <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:items-end">
-          <section className="space-y-6">
-            <span className="inline-flex rounded-full border border-stone-900/10 bg-white/80 px-4 py-2 text-sm tracking-[0.24em] text-stone-600 uppercase">
-              Artpeeker
-            </span>
-            <div className="space-y-4">
-              <h1 className="max-w-2xl text-5xl font-semibold tracking-[-0.05em] text-balance md:text-7xl">
-                Favorite artworks, all in one calm place.
-              </h1>
-              <p className="max-w-xl text-lg leading-8 text-stone-600">
-                Build your collection, revisit details that caught your eye,
-                and keep your art discoveries synced with a simple social login.
-              </p>
-            </div>
-          </section>
-
-          <section className="rounded-[1.75rem] border border-stone-900/10 bg-stone-950 p-8 text-stone-50 shadow-[0_18px_60px_rgba(0,0,0,0.24)]">
-            <p className="text-sm tracking-[0.2em] text-stone-400 uppercase">
-              Start here
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
-              Sign in to continue
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-stone-300">
-              We set up a dedicated login screen first so the Kakao OAuth flow
-              can plug into a clear entry point next.
-            </p>
-            <Link
-              href="/login"
-              className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#FEE500] px-6 text-sm font-semibold text-stone-950 transition-transform duration-200 hover:-translate-y-0.5"
-            >
-              Open login page
-            </Link>
-          </section>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#f6f8fa] px-6 py-16 text-[#1f2328]">
+      <div className="w-full max-w-3xl text-center">
+        <p className="text-sm font-medium text-[#59636e]">Artpeeker</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] md:text-5xl">
+          작품을 저장하고 다시 보는 가장 단순한 방법
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-[#59636e]">
+          좋아한 작품, 컬렉션, 감상 기록을 깔끔하게 모아두고 카카오 로그인으로
+          가볍게 시작하세요.
+        </p>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/login"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-[#d0d7de] bg-[#1f2328] px-4 text-sm font-semibold text-white hover:bg-[#2f353d]"
+          >
+            로그인 페이지로 이동
+          </Link>
         </div>
       </div>
     </main>
