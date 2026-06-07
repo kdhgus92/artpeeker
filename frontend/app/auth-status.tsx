@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 type CurrentUser = {
   kakaoId: string;
   nickname: string | null;
+  profileImageUrl: string | null;
 };
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
@@ -23,7 +24,7 @@ export function AuthStatus() {
 
     async function loadCurrentUser() {
       try {
-        const response = await fetch(`${apiUrl}/auth/kakao/me`, {
+        const response = await fetch(`${apiUrl}/auth/me`, {
           credentials: "include",
         });
 
@@ -59,7 +60,7 @@ export function AuthStatus() {
       return;
     }
 
-    await fetch(`${apiUrl}/auth/kakao/logout`, {
+    await fetch(`${apiUrl}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -99,7 +100,14 @@ export function AuthStatus() {
 
   return (
     <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <div className="rounded-md border border-[#d0d7de] bg-white px-4 py-2 text-sm text-[#59636e]">
+      <div className="inline-flex items-center gap-3 rounded-md border border-[#d0d7de] bg-white px-4 py-2 text-sm text-[#59636e]">
+        {user.profileImageUrl ? (
+          <span
+            aria-hidden="true"
+            className="size-7 rounded-full border border-[#d0d7de] bg-cover bg-center"
+            style={{ backgroundImage: `url(${user.profileImageUrl})` }}
+          />
+        ) : null}
         <span className="font-semibold text-[#1f2328]">
           {user.nickname ?? "Kakao 사용자"}
         </span>

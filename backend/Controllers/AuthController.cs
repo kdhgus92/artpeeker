@@ -19,6 +19,7 @@ namespace backend.Controllers;
 public class AuthController : ControllerBase
 {
     private const string StateCookieName = "artpeeker_kakao_oauth_state";
+    private const string ProfileImageClaimType = "kakao_profile_image_url";
     private static readonly TimeSpan StateCookieLifetime = TimeSpan.FromMinutes(10);
 
     private readonly IHttpClientFactory _httpClientFactory;
@@ -153,7 +154,7 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("me")]
+    [HttpGet("/auth/me")]
     public IActionResult Me()
     {
         var kakaoId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -165,11 +166,12 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             kakaoId,
-            nickname = User.FindFirstValue(ClaimTypes.Name)
+            nickname = User.FindFirstValue(ClaimTypes.Name),
+            profileImageUrl = User.FindFirstValue(ProfileImageClaimType)
         });
     }
 
-    [HttpPost("logout")]
+    [HttpPost("/auth/logout")]
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -248,6 +250,11 @@ public class AuthController : ControllerBase
         if (!string.IsNullOrWhiteSpace(userProfile.Properties?.Nickname))
         {
             claims.Add(new Claim(ClaimTypes.Name, userProfile.Properties.Nickname));
+        }
+
+        if (!string.IsNullOrWhiteSpace(userProfile.Properties?.ProfileImage))
+        {
+            claims.Add(new Claim(ProfileImageClaimType, userProfile.Properties.ProfileImage));
         }
 
         var identity = new ClaimsIdentity(
@@ -351,4 +358,10 @@ public class KakaoUserProperties
 {
     [JsonPropertyName("nickname")]
     public string? Nickname { get; set; }
+
+    [JsonPropertyName("profile_image")]
+    public string? ProfileImage { get; set; }
+
+    [JsonPropertyName("thumbnail_image")]
+    public string? ThumbnailImage { get; set; }
 }
