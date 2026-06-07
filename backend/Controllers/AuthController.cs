@@ -1,9 +1,13 @@
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using backend.Kakao;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
@@ -129,6 +133,7 @@ public class AuthController : ControllerBase
         {
             var tokenResponse = await ExchangeCodeForTokenAsync(code, options);
             var userProfile = await GetUserProfileAsync(tokenResponse.AccessToken);
+            await SignInUserAsync(userProfile);
 
             return Redirect(BuildFrontendUrl(
                 frontendLoginUrl,
@@ -145,6 +150,31 @@ public class AuthController : ControllerBase
                 "error",
                 "Failed to complete Kakao login."));
         }
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var kakaoId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(kakaoId))
+        {
+            return Unauthorized();
+        }
+
+        return Ok(new
+        {
+            kakaoId,
+            nickname = User.FindFirstValue(ClaimTypes.Name)
+        });
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return NoContent();
     }
 
     private async Task<KakaoTokenResponse> ExchangeCodeForTokenAsync(string code, KakaoOptions options)
@@ -206,6 +236,35 @@ public class AuthController : ControllerBase
         }
 
         return userResponse;
+    }
+
+    private async Task SignInUserAsync(KakaoUserResponse userProfile)
+    {
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, userProfile.Id.ToString())
+        };
+
+        if (!string.IsNullOrWhiteSpace(userProfile.Properties?.Nickname))
+        {
+            claims.Add(new Claim(ClaimTypes.Name, userProfile.Properties.Nickname));
+        }
+
+        var identity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        var properties = new AuthenticationProperties
+        {
+            IsPersistent = true,
+            IssuedUtc = DateTimeOffset.UtcNow,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14)
+        };
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal,
+            properties);
     }
 
     private static IEnumerable<KeyValuePair<string?, string?>> BuildTokenRequest(

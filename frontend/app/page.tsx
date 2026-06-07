@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AuthStatus } from "./auth-status";
 
 export default function Home() {
   return (
@@ -13,12 +13,7 @@ export default function Home() {
           가볍게 시작하세요.
         </p>
         <div className="mt-8 flex justify-center">
-          <Link
-            href="/login"
-            className="inline-flex h-10 items-center justify-center rounded-md border border-[#d0d7de] bg-[#1f2328] px-4 text-sm font-semibold text-white hover:bg-[#2f353d]"
-          >
-            로그인 페이지로 이동
-          </Link>
+          <AuthStatus />
         </div>
       </div>
     </main>
