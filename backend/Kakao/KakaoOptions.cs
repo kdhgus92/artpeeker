@@ -12,5 +12,5 @@ public class KakaoOptions
 
     public string FrontendLoginUrl { get; set; } = "http://localhost:3000/login";
 
-    public string Scope { get; set; } = "profile_nickname,account_email";
+    public string Scope { get; set; } = "profile_nickname,profile_image";
 }
