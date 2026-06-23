@@ -4,7 +4,7 @@
 
 Artpeeker는 프론트엔드와 백엔드가 나뉜 웹 애플리케이션입니다.
 
-- `frontend/`: Next.js 16, React 19, TypeScript, Tailwind CSS 4, pnpm 기반 앱입니다.
+- `frontend/`: Next.js 16, React 19, TypeScript, Tailwind CSS 4, npm 기반 앱입니다.
 - `backend/`: .NET 10 대상 ASP.NET Core Web API입니다. 현재는 Kakao OAuth 로그인을 중심으로 구성되어 있습니다.
 
 사용자가 명시적으로 양쪽을 모두 요청하지 않는 한, 변경 범위는 관련된 영역 안으로 좁게 유지하세요.
@@ -21,10 +21,10 @@ Artpeeker는 프론트엔드와 백엔드가 나뉜 웹 애플리케이션입니
 
 `frontend/`에서 실행합니다.
 
-- 의존성 설치: `pnpm install`
-- 개발 서버 실행: `pnpm dev`
-- 빌드: `pnpm build`
-- 린트: `pnpm lint`
+- 의존성 설치: `npm install`
+- 개발 서버 실행: `npm run dev`
+- 빌드: `npm run build`
+- 린트: `npm run lint`
 
 이 프로젝트는 Next.js 16을 사용합니다. 프레임워크 API, 라우팅, 메타데이터, 설정 동작을 바꾸기 전에는 `frontend/node_modules/next/dist/docs/`에 설치된 Next.js 문서를 확인하세요. 이 버전은 오래된 Next.js 관례와 다를 수 있습니다.
 
@@ -67,7 +67,7 @@ Artpeeker는 프론트엔드와 백엔드가 나뉜 웹 애플리케이션입니
 
 ## 검증
 
-프론트엔드 변경 후에는 `pnpm lint`를 실행하세요. 동작이나 빌드 결과에 영향이 있을 수 있으면 `pnpm build`도 실행하세요.
+프론트엔드 변경 후에는 `npm run lint`를 실행하세요. 동작이나 빌드 결과에 영향이 있을 수 있으면 `npm run build`도 실행하세요.
 
 백엔드 변경 후에는 `dotnet build`를 실행하세요. 테스트 프로젝트가 있거나 로직을 테스트 가능한 단위로 분리했다면 관련 테스트를 추가하거나 실행하세요.
 
