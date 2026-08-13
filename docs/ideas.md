@@ -4,16 +4,16 @@
 
 ## 다음 개발 추천
 
-우선순위는 "백엔드를 NestJS로 교체하고, 로그인 이후 사용자별 공간으로 이어지는 기반"을 작게 만드는 것입니다.
+우선순위는 ".NET 백엔드의 로그인을 안정화하고, 로그인 이후 사용자별 공간으로 이어지는 기반"을 작게 만드는 것입니다.
 
-1. 현재 .NET 백엔드를 NestJS로 완전히 교체합니다.
-2. Kakao 인증 엔드포인트 parity를 맞춥니다.
+1. 로컬 .NET 10 개발 환경과 백엔드 실행을 확인합니다.
+2. Kakao 인증 엔드포인트 동작을 검증합니다.
    - `GET /auth/kakao`
    - `GET /auth/kakao/callback`
-   - `GET /auth/kakao/me`
-   - `POST /auth/kakao/logout`
+   - `GET /auth/me`
+   - `POST /auth/logout`
 3. OAuth `state` 검증, HttpOnly 쿠키 세션, fixed-time 비교에 해당하는 보안 흐름을 보존합니다.
-4. NestJS 기반이 안정되면 로그인한 사용자를 저장할 User 모델과 데이터베이스를 결정합니다.
+4. 로그인한 사용자를 저장할 User 모델과 데이터베이스를 결정합니다.
 5. `/me` 또는 `/gallery` 같은 로그인 후 내 공간 페이지를 추가합니다.
 6. 이후 작품 저장 API와 빈 상태 UI를 붙입니다.
 
@@ -27,15 +27,15 @@ Kakao OAuth 왕복을 Artpeeker 로그인 세션으로 연결하는 기본 흐�
 - OAuth `state` 쿠키 검증, Kakao 토큰 교환, Kakao 사용자 정보 조회 골격이 있습니다.
 - 프론트엔드 `/login` 페이지는 Kakao 로그인 버튼과 성공/실패 query string 표시를 처리합니다.
 - 로그인 성공 후 HttpOnly 인증 쿠키를 발급합니다.
-- 백엔드에는 `/auth/kakao/me`, `/auth/kakao/logout`이 있습니다.
-- 홈 화면은 `/auth/kakao/me`를 호출해 로그인 상태, 프로필 이미지, 로그아웃 버튼을 표시합니다.
+- 백엔드에는 `/auth/me`, `/auth/logout`이 있습니다.
+- 홈 화면은 `/auth/me`를 호출해 로그인 상태, 프로필 이미지, 로그아웃 버튼을 표시합니다.
 
-아직 남은 작업은 이 흐름을 NestJS로 옮긴 뒤, 로그인한 사용자를 DB의 `User`와 연결하고 실제 사용자별 데이터를 저장하는 것입니다.
+아직 남은 작업은 현재 흐름을 검증한 뒤 로그인한 사용자를 DB의 `User`와 연결하고 실제 사용자별 데이터를 저장하는 것입니다.
 
 ## 다음 기능 후보
 
-- NestJS 백엔드 교체
-- Kakao OAuth 인증 parity
+- .NET 백엔드 실행 환경 정리
+- Kakao OAuth 통합 검증
 - 사용자 모델 설계
 - 데이터베이스 선택
 - 작품 저장 기능
@@ -47,7 +47,7 @@ Kakao OAuth 왕복을 Artpeeker 로그인 세션으로 연결하는 기본 흐�
 
 ## 백엔드 후보 작업
 
-- NestJS 프로젝트 구조 설계
+- .NET 인증 코드의 서비스 분리 검토
 - Kakao OAuth 설정 구조 설계
 - 쿠키 세션 방식 결정
 - User 모델 설계
@@ -73,13 +73,13 @@ Kakao OAuth 왕복을 Artpeeker 로그인 세션으로 연결하는 기본 흐�
 - 프로젝트 지침은 루트 `AGENTS.md`와 `frontend/AGENTS.md`에 정리합니다.
 - 프론트엔드 패키지 매니저는 npm입니다.
 - 프론트엔드의 현재 톤은 절제된 GitHub 스타일을 유지합니다.
-- 백엔드는 현재 .NET 구현이 있지만, 다음 방향은 NestJS 완전 교체입니다.
-- 기존 Kakao OAuth 보안 흐름은 NestJS 전환 후에도 보존합니다.
+- 백엔드는 .NET 10 ASP.NET Core Web API를 유지합니다. (2026-08-13 결정)
+- 기존 Kakao OAuth 보안 흐름은 이후 백엔드 변경에서도 보존합니다.
 
 ## 열린 질문
 
 - 데이터베이스는 무엇을 사용할지?
 - 저장할 작품 데이터는 외부 API에서 가져올지, 사용자가 직접 입력할지?
 - Kakao 로그인 후 인증 상태는 쿠키 세션으로 계속 관리할지?
-- NestJS 전환 후 배포는 어디에 할지?
+- .NET 백엔드는 어디에 배포할지?
 - 사용자 개인정보 처리 정책은 어느 수준부터 문서화할지?

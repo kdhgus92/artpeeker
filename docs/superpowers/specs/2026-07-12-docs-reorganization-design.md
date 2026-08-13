@@ -1,5 +1,7 @@
 # Docs Reorganization Design
 
+> 상태: 폐기됨 — 2026-08-13에 NestJS 전환을 취소하고 .NET 10 백엔드를 유지하기로 결정했습니다. 아래 내용은 당시 설계 기록으로만 보존합니다.
+
 ## Goal
 
 Reorganize the Artpeeker docs around the current transition plan: the repository still contains a .NET backend, but the agreed next direction is to replace it with a NestJS backend.

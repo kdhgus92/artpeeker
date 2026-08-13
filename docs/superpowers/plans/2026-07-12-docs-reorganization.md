@@ -1,5 +1,7 @@
 # Docs Reorganization Implementation Plan
 
+> 상태: 폐기됨 — 2026-08-13에 NestJS 전환을 취소하고 .NET 10 백엔드를 유지하기로 결정했습니다. 아래 내용은 당시 작업 기록으로만 보존합니다.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Reorganize Artpeeker documentation around the NestJS backend transition while preserving the current .NET implementation facts.
