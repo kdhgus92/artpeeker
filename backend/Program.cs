@@ -1,10 +1,21 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using backend.Kakao;
+using backend.Users;
+using Dapper.ColumnMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+ColumnTypeMapper.RegisterForTypes(typeof(AppUser));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("ConnectionStrings:DefaultConnection is missing.");
+}
+
+builder.Services.AddSingleton(new Npgsql.NpgsqlDataSourceBuilder(connectionString).Build());
+builder.Services.AddScoped<UserService>();
 builder.Services
     .AddOptions<KakaoOptions>()
     .BindConfiguration(KakaoOptions.SectionName);

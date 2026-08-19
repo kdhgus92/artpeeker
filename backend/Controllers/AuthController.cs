@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using backend.Kakao;
+using backend.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -25,15 +25,18 @@ public class AuthController : ControllerBase
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IOptions<KakaoOptions> _kakaoOptions;
     private readonly ILogger<AuthController> _logger;
+    private readonly UserService _userService;
 
     public AuthController(
         IHttpClientFactory httpClientFactory,
         IOptions<KakaoOptions> kakaoOptions,
-        ILogger<AuthController> logger)
+        ILogger<AuthController> logger,
+        UserService userService)
     {
         _httpClientFactory = httpClientFactory;
         _kakaoOptions = kakaoOptions;
         _logger = logger;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -134,7 +137,8 @@ public class AuthController : ControllerBase
         {
             var tokenResponse = await ExchangeCodeForTokenAsync(code, options);
             var userProfile = await GetUserProfileAsync(tokenResponse.AccessToken);
-            await SignInUserAsync(userProfile);
+            var user = await _userService.UpsertFromKakaoAsync(userProfile, HttpContext.RequestAborted);
+            await SignInUserAsync(userProfile, user);
 
             return Redirect(BuildFrontendUrl(
                 frontendLoginUrl,
@@ -240,11 +244,12 @@ public class AuthController : ControllerBase
         return userResponse;
     }
 
-    private async Task SignInUserAsync(KakaoUserResponse userProfile)
+    private async Task SignInUserAsync(KakaoUserResponse userProfile, AppUser user)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, userProfile.Id.ToString())
+            new(ClaimTypes.NameIdentifier, userProfile.Id.ToString()),
+            new("artpeeker_user_id", user.Id.ToString())
         };
 
         if (!string.IsNullOrWhiteSpace(userProfile.Properties?.Nickname))
@@ -337,31 +342,4 @@ public class AuthController : ControllerBase
 
         return QueryHelpers.AddQueryString(baseUrl, queryParams);
     }
-}
-
-public class KakaoTokenResponse
-{
-    [JsonPropertyName("access_token")]
-    public string AccessToken { get; set; } = string.Empty;
-}
-
-public class KakaoUserResponse
-{
-    [JsonPropertyName("id")]
-    public long Id { get; set; }
-
-    [JsonPropertyName("properties")]
-    public KakaoUserProperties? Properties { get; set; }
-}
-
-public class KakaoUserProperties
-{
-    [JsonPropertyName("nickname")]
-    public string? Nickname { get; set; }
-
-    [JsonPropertyName("profile_image")]
-    public string? ProfileImage { get; set; }
-
-    [JsonPropertyName("thumbnail_image")]
-    public string? ThumbnailImage { get; set; }
 }

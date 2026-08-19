@@ -13,6 +13,7 @@
 - `project-context.md`: 제품 목표, 현재 구현, .NET 백엔드 개발 방향을 정리합니다.
 - `development-flow.md`: 현재 로컬 실행, 검증, 커밋 전 확인 루틴을 정리합니다.
 - `kakao-auth-flow.md`: Kakao OAuth 설정값과 로그인·쿠키 흐름을 다이어그램으로 설명합니다.
+- `database.md`: Supabase PostgreSQL 연결, 마이그레이션, 사용자 저장 구조를 설명합니다.
 - `vibe-coding.md`: 에이전트와 함께 작업할 때 좋은 요청 방식과 작업 흐름을 정리합니다.
 - `ideas.md`: 기능 아이디어, 결정 사항, 다음 작업 후보를 적어두는 열린 노트입니다.
 

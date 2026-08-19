@@ -57,6 +57,17 @@ Kakao OAuth 왕복을 Artpeeker 로그인 세션으로 연결하는 기본 흐�
 - CORS 설정 정리
 - 로컬 개발용 환경 변수 구성
 
+## 회사 프로젝트 참고 스택
+
+회사 프로젝트에서는 SQL을 코드에 직접 작성하는 데이터 접근 방식과 함께 다음 패키지를 사용합니다.
+
+- `Dapper` `2.1.72`
+- `Dapper.SqlBuilder`
+- `Dapper.ColumnMapper`
+- `Npgsql` `10.0.2`
+
+Artpeeker는 회사 프로젝트의 SQL 중심 개발 방식을 채택합니다. 다만 회사의 고정 버전을 복제하지 않고 Artpeeker 구현 시점의 최신 안정판을 사용합니다. 스키마 변경은 EF Core Migration 대신 버전이 붙은 SQL 스크립트로 관리합니다. (2026-08-20 결정)
+
 ## 프론트엔드 후보 작업
 
 - 로그인 후 홈 화면 상태 분기
@@ -75,6 +86,7 @@ Kakao OAuth 왕복을 Artpeeker 로그인 세션으로 연결하는 기본 흐�
 - 프론트엔드의 현재 톤은 절제된 GitHub 스타일을 유지합니다.
 - 백엔드는 .NET 10 ASP.NET Core Web API를 유지합니다. (2026-08-13 결정)
 - 기존 Kakao OAuth 보안 흐름은 이후 백엔드 변경에서도 보존합니다.
+- Supabase 데이터 접근에는 Dapper와 Npgsql을 사용하고 SQL을 코드에서 명시적으로 관리합니다. (2026-08-20 결정)
 
 ## 열린 질문
 
