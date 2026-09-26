@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 const kakaoAuthUrl =
@@ -9,12 +10,19 @@ const kakaoAuthUrl =
   (apiUrl ? `${apiUrl}/auth/kakao` : "");
 
 export function LoginContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isConfigured =
     !!process.env.NEXT_PUBLIC_KAKAO_LOGIN_URL || !!process.env.NEXT_PUBLIC_API_URL;
   const status = searchParams.get("status");
   const nickname = searchParams.get("nickname");
   const error = searchParams.get("error");
+
+  useEffect(() => {
+    if (status === "success") {
+      router.replace("/");
+    }
+  }, [router, status]);
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-[#f6f8fa] px-6 py-10 text-[#1f2328]">
